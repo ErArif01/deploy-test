@@ -52,6 +52,6 @@ jobs:
     steps:
       - name: Deploy to Production
         run: |
-          man.js
+          index.html
         env:
           ENVIRONMENT: production
