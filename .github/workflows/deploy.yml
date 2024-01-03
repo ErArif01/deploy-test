@@ -1,0 +1,58 @@
+name: Multistage Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+  test:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Test
+        run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - name: Deploy to Production
+        run: |
+          # Add your deployment script or commands here
+          echo "Deploying to production..."
+        env:
+          ENVIRONMENT: production
